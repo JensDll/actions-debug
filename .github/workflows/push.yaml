@@ -9,7 +9,7 @@ jobs:
   should_run:
     uses: JensDll/should-run/.github/workflows/main.yaml@dev
     with:
-      projects: api web
+      projects: api web db
 
   api:
     if: fromJSON(needs.should_run.outputs.result).api == 'true'
