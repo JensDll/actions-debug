@@ -23,6 +23,11 @@ jobs:
           NEEDS_CONTEXT: ${{ toJSON(needs) }}
         run: env
 
+      - name: Git
+        run: |
+          git log --oneline
+          git diff ${{ github.event.before }} ${{ github.event.after }}
+
   web:
     runs-on: ubuntu-latest
     defaults:
