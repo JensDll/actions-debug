@@ -6,12 +6,6 @@ on:
       - main
 
 jobs:
-  should-run:
-    uses: JensDll/should-run/.github/workflows/main.yaml@main
-    with:
-      projects: api web db
-      diff-filter: dr
-
   main:
     runs-on: self-hosted
     defaults:
