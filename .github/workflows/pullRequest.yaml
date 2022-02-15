@@ -14,6 +14,7 @@ jobs:
           GITHUB_CONTEXT: ${{ toJSON(github) }}
           STEPS_CONTEXT: ${{ toJSON(steps) }}
           NEEDS_CONTEXT: ${{ toJSON(needs) }}
+          GITHUB_ACTIONS_RUNNER_ATTACH_DEBUGGER: true
         run: |
           echo "-----------------------------------"
           ls -la
