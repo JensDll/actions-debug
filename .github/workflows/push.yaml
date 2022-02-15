@@ -12,53 +12,12 @@ jobs:
       projects: api web db
       diff-filter: dr
 
-  api:
-    if: fromJSON(needs.should-run.outputs.result).api == 'true'
+  main:
     runs-on: self-hosted
-    needs: should-run
     defaults:
       run:
         working-directory: services/api
     steps:
-      - name: Checkout the repository
-        uses: actions/checkout@v2
-
-      - name: Debug information
-        env:
-          GITHUB_CONTEXT: ${{ toJSON(github) }}
-          STEPS_CONTEXT: ${{ toJSON(steps) }}
-          NEEDS_CONTEXT: ${{ toJSON(needs) }}
-        run: env
-
-  web:
-    if: fromJSON(needs.should-run.outputs.result).web == 'true'
-    runs-on: self-hosted
-    needs: should-run
-    defaults:
-      run:
-        working-directory: services/web
-    steps:
-      - name: Checkout the repository
-        uses: actions/checkout@v2
-
-      - name: Debug information
-        env:
-          GITHUB_CONTEXT: ${{ toJSON(github) }}
-          STEPS_CONTEXT: ${{ toJSON(steps) }}
-          NEEDS_CONTEXT: ${{ toJSON(needs) }}
-        run: env
-
-  db:
-    if: fromJSON(needs.should-run.outputs.result).db == 'true'
-    runs-on: self-hosted
-    needs: should-run
-    defaults:
-      run:
-        working-directory: services/web
-    steps:
-      - name: Checkout the repository
-        uses: actions/checkout@v2
-
       - name: Debug information
         env:
           GITHUB_CONTEXT: ${{ toJSON(github) }}
