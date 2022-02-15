@@ -14,4 +14,10 @@ jobs:
           GITHUB_CONTEXT: ${{ toJSON(github) }}
           STEPS_CONTEXT: ${{ toJSON(steps) }}
           NEEDS_CONTEXT: ${{ toJSON(needs) }}
-        run: env
+        run: |
+          echo "-----------------------------------"
+          ls -la
+          echo "-----------------------------------"
+          pwd
+          echo "-----------------------------------"
+          env
