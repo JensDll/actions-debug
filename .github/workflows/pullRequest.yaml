@@ -14,7 +14,7 @@ jobs:
 
   api:
     if: fromJSON(needs.should-run.outputs.result).api == 'true'
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     needs: should-run
     defaults:
       run:
@@ -32,7 +32,7 @@ jobs:
 
   web:
     if: fromJSON(needs.should-run.outputs.result).web == 'true'
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     needs: should-run
     defaults:
       run:
@@ -50,7 +50,7 @@ jobs:
 
   db:
     if: fromJSON(needs.should-run.outputs.result).db == 'true'
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     needs: should-run
     defaults:
       run:
