@@ -12,6 +12,11 @@ jobs:
       - name: Checking out the repository
         uses: actions/checkout@v2
 
+      - name: Debug information
+        run: |
+          ls -la
+          pwd
+
       - name: Making change
         run: echo "github actions" >> test.txt
 
