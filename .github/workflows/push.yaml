@@ -11,8 +11,6 @@ jobs:
     steps:
       - name: Checking out the repository
         uses: actions/checkout@v2
-        with:
-          persist-credentials: false
 
       - name: Debug information
         env:
@@ -26,11 +24,25 @@ jobs:
       - name: Making change
         run: echo "github actions" >> test.txt
 
+      - name: Creating a pull request
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const { repo, owner } = context.repo
+            await github.rest.pulls.create({
+              title: 'Test',
+              owner,
+              repo,
+              head: '${{ github.ref_name }}',
+              base: 'develop',
+            });
+
       - name: Committing changes
         run: |
-          git remote set-url origin https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
-          git config user.name github-actions
-          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
-          git add .
-          git commit -m "github-actions: test"
-          git push
+          git branch -a
+          # git remote set-url origin https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+          # git config user.name github-actions
+          # git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          # git add .
+          # git commit -m "github-actions: test"
+          # git push
