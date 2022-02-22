@@ -15,17 +15,22 @@ jobs:
           persist-credentials: false
 
       - name: Debug information
+        env:
+          GITHUB_CONTEXT: ${{ toJSON(github) }}
+          SECRETS_CONTEXT: ${{ toJSON(secrets) }}
         run: |
           ls -la
           pwd
+          env
 
       - name: Making change
         run: echo "github actions" >> test.txt
 
       - name: Committing changes
         run: |
+          git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/$GITHUB_REPOSITORY
           git config user.name github-actions
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
           git add .
-          git commit -m "github-actions: fix code style"
+          git commit -m "github-actions: test"
           git push
