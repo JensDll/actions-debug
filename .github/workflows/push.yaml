@@ -11,6 +11,8 @@ jobs:
     steps:
       - name: Checking out the repository
         uses: actions/checkout@v2
+        with:
+          persist-credentials: false
 
       - name: Debug information
         run: |

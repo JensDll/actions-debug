@@ -10,7 +10,6 @@ jobs:
     uses: JensDll/should-run/.github/workflows/main.yaml@main
     with:
       projects: api web db
-      diff-filter: dr
 
   api:
     if: fromJSON(needs.should-run.outputs.result).api == 'true'
