@@ -1,4 +1,4 @@
-name: On push
+name: On pull request
 
 on:
   push:
@@ -6,43 +6,61 @@ on:
       - main
 
 jobs:
-  main:
+  should-run:
+    uses: JensDll/should-run/.github/workflows/main.yaml@main
+    with:
+      projects: services/api services/web services/db
+
+  api:
+    if: fromJSON(needs.should-run.outputs.result)['services/api'] == 'true'
     runs-on: ubuntu-latest
+    needs: should-run
+    defaults:
+      run:
+        working-directory: services/api
     steps:
-      - name: Checking out the repository
+      - name: Checkout the repository
         uses: actions/checkout@v2
 
       - name: Debug information
         env:
           GITHUB_CONTEXT: ${{ toJSON(github) }}
-          SECRETS_CONTEXT: ${{ toJSON(secrets) }}
-        run: |
-          ls -la
-          pwd
-          env
+          STEPS_CONTEXT: ${{ toJSON(steps) }}
+          NEEDS_CONTEXT: ${{ toJSON(needs) }}
+        run: env
 
-      - name: Making change
-        run: echo "github actions" >> test.txt
+  web:
+    if: fromJSON(needs.should-run.outputs.result)['services/web'] == 'true'
+    runs-on: ubuntu-latest
+    needs: should-run
+    defaults:
+      run:
+        working-directory: services/web
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v2
 
-      - name: Creating a pull request
-        uses: actions/github-script@v6
-        with:
-          script: |
-            const { repo, owner } = context.repo
-            await github.rest.pulls.create({
-              title: 'Test',
-              owner,
-              repo,
-              head: '${{ github.ref_name }}',
-              base: 'develop',
-            });
+      - name: Debug information
+        env:
+          GITHUB_CONTEXT: ${{ toJSON(github) }}
+          STEPS_CONTEXT: ${{ toJSON(steps) }}
+          NEEDS_CONTEXT: ${{ toJSON(needs) }}
+        run: env
 
-      - name: Committing changes
-        run: |
-          git branch -a
-          # git remote set-url origin https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
-          # git config user.name github-actions
-          # git config user.email 41898282+github-actions[bot]@users.noreply.github.com
-          # git add .
-          # git commit -m "github-actions: test"
-          # git push
+  db:
+    if: fromJSON(needs.should-run.outputs.result)['services/db'] == 'true'
+    runs-on: ubuntu-latest
+    needs: should-run
+    defaults:
+      run:
+        working-directory: services/web
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v2
+
+      - name: Debug information
+        env:
+          GITHUB_CONTEXT: ${{ toJSON(github) }}
+          STEPS_CONTEXT: ${{ toJSON(steps) }}
+          NEEDS_CONTEXT: ${{ toJSON(needs) }}
+        run: env

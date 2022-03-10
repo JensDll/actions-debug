@@ -9,10 +9,10 @@ jobs:
   should-run:
     uses: JensDll/should-run/.github/workflows/main.yaml@main
     with:
-      projects: api web db
+      projects: services/api services/web services/db
 
   api:
-    if: fromJSON(needs.should-run.outputs.result).api == 'true'
+    if: fromJSON(needs.should-run.outputs.result)['services/api'] == 'true'
     runs-on: ubuntu-latest
     needs: should-run
     defaults:
@@ -30,7 +30,7 @@ jobs:
         run: env
 
   web:
-    if: fromJSON(needs.should-run.outputs.result).web == 'true'
+    if: fromJSON(needs.should-run.outputs.result)['services/web'] == 'true'
     runs-on: ubuntu-latest
     needs: should-run
     defaults:
@@ -48,7 +48,7 @@ jobs:
         run: env
 
   db:
-    if: fromJSON(needs.should-run.outputs.result).db == 'true'
+    if: fromJSON(needs.should-run.outputs.result)['services/db'] == 'true'
     runs-on: ubuntu-latest
     needs: should-run
     defaults:
